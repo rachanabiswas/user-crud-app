@@ -2,8 +2,8 @@ import UserCard from "@/components/UserCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-	title: "Next.js Starter Fullstack",
-	description: "Production grade Fullstack Next.js starter template",
+	title: "All Users | User CRUD",
+	description: "All users page of User CRUD application",
 };
 
 const page = () => {
