@@ -1,4 +1,6 @@
-import { PencilLineIcon, Trash2Icon } from "lucide-react";
+import { PencilLineIcon } from "lucide-react";
+import Link from "next/link";
+import UserDeleteButton from "./Buttons/UserDeleteButton";
 import { Button } from "./shadcnui/button";
 import {
 	Card,
@@ -22,16 +24,15 @@ const UserCard = () => {
 			</CardContent>
 
 			<CardFooter className="grid grid-cols-2 gap-4">
-				<Button
-					variant={"destructive"}
-					className="cursor-pointer">
-					<Trash2Icon /> Delete
-				</Button>
+				<UserDeleteButton />
 
 				<Button
 					variant={"secondary"}
-					className="cursor-pointer">
-					<PencilLineIcon /> Edit
+					className="cursor-pointer"
+					asChild>
+					<Link href={`/abcd`}>
+						<PencilLineIcon /> Edit
+					</Link>
 				</Button>
 			</CardFooter>
 		</Card>
