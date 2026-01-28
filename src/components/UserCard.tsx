@@ -1,5 +1,6 @@
 import { PencilLineIcon } from "lucide-react";
 import Link from "next/link";
+import { User } from "../../generated/prisma/client";
 import UserDeleteButton from "./Buttons/UserDeleteButton";
 import { Button } from "./shadcnui/button";
 import {
@@ -10,17 +11,25 @@ import {
 	CardTitle,
 } from "./shadcnui/card";
 
-const UserCard = () => {
+type UserCardProps = {
+	userInfo: User;
+};
+
+const UserCard = ({ userInfo }: UserCardProps) => {
+	const { firstName, lastName, email, gender, phNumber } = userInfo;
+
 	return (
 		<Card className="w-sm">
 			<CardHeader>
-				<CardTitle className="text-center text-3xl">Rayan Basu</CardTitle>
+				<CardTitle className="text-center text-3xl">
+					{firstName} {lastName}
+				</CardTitle>
 			</CardHeader>
 
 			<CardContent className="grid grid-cols-3 place-items-center gap-4">
-				<div className="col-span-3 text-2xl">example@gmail.com</div>
-				<div className="col-span-1 place-self-end text-xl">Male</div>
-				<div className="col-span-2 text-xl">+91 9876543210</div>
+				<div className="col-span-3 text-2xl">{email}</div>
+				<div className="col-span-1 place-self-end text-xl">{gender}</div>
+				<div className="col-span-2 text-xl">+91 {phNumber}</div>
 			</CardContent>
 
 			<CardFooter className="grid grid-cols-2 gap-4">
