@@ -16,7 +16,7 @@ type UserCardProps = {
 };
 
 const UserCard = ({ userInfo }: UserCardProps) => {
-	const { firstName, lastName, email, gender, phNumber } = userInfo;
+	const { firstName, lastName, email, gender, phNumber, id } = userInfo;
 
 	return (
 		<Card className="w-sm">
@@ -35,7 +35,7 @@ const UserCard = ({ userInfo }: UserCardProps) => {
 			</CardContent>
 
 			<CardFooter className="grid grid-cols-2 gap-4">
-				<UserDeleteButton />
+				<UserDeleteButton userId={id} />
 
 				<Button
 					variant={"secondary"}
