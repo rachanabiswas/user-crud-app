@@ -1,6 +1,7 @@
 "use client";
 
 import { userFormSchema, UserFormType } from "@/lib/zodSchema";
+import createUser from "@/server/createUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	LoaderIcon,
@@ -8,7 +9,9 @@ import {
 	SendIcon,
 	SparklesIcon,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
@@ -22,6 +25,8 @@ import {
 import { Separator } from "../shadcnui/separator";
 
 const CreateUserForms = () => {
+	const { push } = useRouter();
+
 	const {
 		handleSubmit,
 		control,
@@ -40,9 +45,19 @@ const CreateUserForms = () => {
 	});
 
 	const submitHandeler = async (data: UserFormType) => {
+		const { isSuccess, message } = await createUser(data);
+
 		await new Promise((r) => setTimeout(r, 1000));
 
-		console.log(data);
+		if (isSuccess) {
+			toast.success(message);
+
+			reset();
+
+			push("/");
+		} else {
+			toast.error(message);
+		}
 	};
 
 	return (

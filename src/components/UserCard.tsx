@@ -27,8 +27,10 @@ const UserCard = ({ userInfo }: UserCardProps) => {
 			</CardHeader>
 
 			<CardContent className="grid grid-cols-3 place-items-center gap-4">
-				<div className="col-span-3 text-2xl">{email}</div>
-				<div className="col-span-1 place-self-end text-xl">{gender}</div>
+				<div className="col-span-3 text-xl">{email}</div>
+				<div className="col-span-1 place-self-end text-xl capitalize">
+					{gender}
+				</div>
 				<div className="col-span-2 text-xl">+91 {phNumber}</div>
 			</CardContent>
 
