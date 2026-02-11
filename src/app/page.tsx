@@ -24,7 +24,7 @@ const page = async () => {
 	}
 
 	return (
-		<section className="grid grid-cols-3 place-items-center gap-4">
+		<section className="grid grid-cols-1 place-items-center gap-4 lg:grid-cols-2 xl:grid-cols-3">
 			{allUsers.map((item) => (
 				<UserCard
 					key={item.id}
