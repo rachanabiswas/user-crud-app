@@ -1,9 +1,13 @@
 "use client";
 
 import { userFormSchema, UserFormType } from "@/lib/zodSchema";
+import updateUser from "@/server/updateUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderIcon, UserPenIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { User } from "../../../generated/prisma/browser";
 import { Button } from "../shadcnui/button";
 import { Field, FieldError, FieldLabel } from "../shadcnui/field";
 import { Input } from "../shadcnui/input";
@@ -15,7 +19,13 @@ import {
 	SelectValue,
 } from "../shadcnui/select";
 
-const UpdateUserForms = () => {
+type UpdateUserFormsProps = {
+	info: User;
+};
+
+const UpdateUserForms = ({ info }: UpdateUserFormsProps) => {
+	const { push } = useRouter();
+
 	const {
 		handleSubmit,
 		control,
@@ -23,19 +33,27 @@ const UpdateUserForms = () => {
 	} = useForm({
 		resolver: zodResolver(userFormSchema),
 		defaultValues: {
-			firstName: "",
-			lastName: "",
-			email: "",
-			gender: "",
-			phNumber: "",
+			firstName: info.firstName,
+			lastName: info.lastName,
+			email: info.email,
+			gender: info.gender,
+			phNumber: info.phNumber,
 		},
 		mode: "all",
 	});
 
 	const updateHandeler = async (data: UserFormType) => {
+		const { isSuccess, message } = await updateUser(data, info.id);
+
 		await new Promise((r) => setTimeout(r, 1000));
 
-		console.log(data);
+		if (isSuccess) {
+			toast.success(message);
+
+			push("/");
+		} else {
+			toast.error(message);
+		}
 	};
 
 	return (

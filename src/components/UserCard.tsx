@@ -41,7 +41,7 @@ const UserCard = ({ userInfo }: UserCardProps) => {
 					variant={"secondary"}
 					className="cursor-pointer"
 					asChild>
-					<Link href={`/abcd`}>
+					<Link href={`/${id}`}>
 						<PencilLineIcon /> Edit
 					</Link>
 				</Button>

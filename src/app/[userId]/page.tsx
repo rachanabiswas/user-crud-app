@@ -5,6 +5,7 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/shadcnui/card";
+import prisma from "@/lib/database/dbClient";
 import { Metadata } from "next";
 
 type UpdatePageProps = {
@@ -19,6 +20,12 @@ export const metadata: Metadata = {
 const page = async ({ params }: UpdatePageProps) => {
 	const { userId } = await params;
 
+	const user = await prisma.user.findUniqueOrThrow({
+		where: {
+			id: userId,
+		},
+	});
+
 	return (
 		<section className="grid h-[84dvh] place-items-center">
 			<Card className="w-md">
@@ -27,7 +34,7 @@ const page = async ({ params }: UpdatePageProps) => {
 				</CardHeader>
 
 				<CardContent>
-					<UpdateUserForms />
+					<UpdateUserForms info={user} />
 				</CardContent>
 			</Card>
 		</section>
