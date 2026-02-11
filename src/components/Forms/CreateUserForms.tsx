@@ -2,6 +2,7 @@
 
 import { userFormSchema, UserFormType } from "@/lib/zodSchema";
 import createUser from "@/server/createUser";
+import { faker } from "@faker-js/faker/locale/en_IN";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
 	LoaderIcon,
@@ -10,6 +11,7 @@ import {
 	SparklesIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { Button } from "../shadcnui/button";
@@ -25,6 +27,8 @@ import {
 import { Separator } from "../shadcnui/separator";
 
 const CreateUserForms = () => {
+	const [loading, setLoading] = useState(false);
+
 	const { push } = useRouter();
 
 	const {
@@ -32,6 +36,8 @@ const CreateUserForms = () => {
 		control,
 		formState: { isSubmitting },
 		reset,
+		setValue,
+		clearErrors,
 	} = useForm({
 		resolver: zodResolver(userFormSchema),
 		defaultValues: {
@@ -58,6 +64,36 @@ const CreateUserForms = () => {
 		} else {
 			toast.error(message);
 		}
+	};
+
+	const enarateHandeler = async () => {
+		setLoading(true);
+
+		const { person, internet, phone } = faker;
+
+		const sex = person.sexType();
+		const firstName = person.firstName(sex);
+		const lastName = person.lastName();
+		const email = internet.email({
+			firstName: firstName.toLowerCase(),
+			lastName: lastName.toLowerCase(),
+		});
+		const phNumber = phone
+			.number({ style: "national" })
+			.replace(/\s+/g, "")
+			.replace(/^0+/, "");
+
+		await new Promise((r) => setTimeout(r, 1000));
+
+		setValue("firstName", firstName);
+		setValue("lastName", lastName);
+		setValue("gender", sex);
+		setValue("email", email);
+		setValue("phNumber", phNumber);
+
+		clearErrors();
+
+		setLoading(false);
 	};
 
 	return (
@@ -117,7 +153,7 @@ const CreateUserForms = () => {
 								<SelectValue placeholder="Select your gender" />
 							</SelectTrigger>
 							<SelectContent position="item-aligned">
-								<SelectItem value="male">Mals 👨🏻</SelectItem>
+								<SelectItem value="male">Male 👨🏻</SelectItem>
 								<SelectItem value="female">Female 👧🏻</SelectItem>
 							</SelectContent>
 						</Select>
@@ -191,9 +227,19 @@ const CreateUserForms = () => {
 
 			<Button
 				type="button"
+				disabled={loading}
+				onClick={enarateHandeler}
 				variant={"outline"}
 				className="cursor-pointer">
-				<SparklesIcon /> Genarate
+				{loading ? (
+					<>
+						<LoaderIcon className="animate-spin" /> Genarating..
+					</>
+				) : (
+					<>
+						<SparklesIcon /> Genarate
+					</>
+				)}
 			</Button>
 		</form>
 	);
